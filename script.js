@@ -36,7 +36,7 @@ async function initLiff() {
 
       // Update User Profile in GAS (Module 3 CRM)
       await apiPost('updateUser', { userId: profile.userId, displayName: profile.displayName });
-      
+
       // Set today's date as default
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('dateInput').value = today;
@@ -199,10 +199,10 @@ async function loadSlots() {
       container.innerHTML = '<div style="grid-column: span 3; text-align: center; color: grey; padding: 20px;">此日期尚無可預約時段</div>';
       return;
     }
-    
+
     // Use the designerId returned from the first slot for booking
     if (slots[0].designerId) {
-       selectedData.designerId = slots[0].designerId;
+      selectedData.designerId = slots[0].designerId;
     }
 
     container.innerHTML = slots.map(s => {
@@ -307,14 +307,14 @@ function transitionStep(from, to) {
   document.getElementById(`step${to}`).classList.remove('hidden');
   document.getElementById(`s${to}`).classList.add('active');
   document.getElementById('nextBtn').disabled = true;
-  
+
   if (to === 3) {
     loadSlots(); // Auto-load when moving to date/time step
   }
-  
+
   if (to === 4) btn.innerText = '立即預約並支付訂金';
   else btn.innerText = '下一步';
-  
+
   currentStep = to;
 }
 
@@ -355,7 +355,7 @@ async function finalizeBooking() {
       <div class="card" style="text-align: center; margin-top: 50px;">
         <div style="font-size: 60px; color: var(--primary); margin-bottom: 20px;">✓</div>
         <h2>預約成功！</h2>
-        <p style="color: grey; margin: 15px 0;">感謝您的預約，系統已自動為您排班。</p>
+        <p style="color: grey; margin: 15px 0;">感謝您的預約。</p>
         <button class="btn-primary" onclick="liff.closeWindow()">關閉並返回 LINE</button>
       </div>
     `;

@@ -24,14 +24,14 @@ window.switchAdminTab = function (tab) {
 async function apiGet(action, params = {}) {
     const query = new URLSearchParams({ action, ...params }).toString();
     const response = await fetch(`${GAS_APP_URL}?${query}`);
+    const text = await response.text();
     try {
-        const result = await response.json();
+        const result = JSON.parse(text);
         if (result.success) return result.data;
         throw new Error(result.error || 'Backend Error');
     } catch (e) {
-        const text = await response.text();
         console.error('API Response Text (Non-JSON):', text);
-        throw new Error(`JSON解析失敗: ${e.message} \n(詳見 Console)`);
+        throw new Error(`解析失敗: ${e.message} \n(詳見 Console)`);
     }
 }
 
@@ -41,9 +41,15 @@ async function apiPost(action, data) {
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(data)
     });
-    const result = await response.json();
-    if (result.success) return result.data;
-    throw new Error(result.error || 'Unknown Error');
+    const text = await response.text();
+    try {
+        const result = JSON.parse(text);
+        if (result.success) return result.data;
+        throw new Error(result.error || 'Backend Error');
+    } catch (e) {
+        console.error('API Post Response Text:', text);
+        throw new Error(`操作失敗: ${e.message}`);
+    }
 }
 
 async function loadData() {

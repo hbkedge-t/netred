@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEAUTIFY | 管理後台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: var(--surface);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        select {
+            background: #1A1A1A;
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: var(--primary);
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab:hover {
+            color: var(--text);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            color: white;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading" class="loading-overlay">
+        <div style="text-align: center;">
+            <h1 style="margin-bottom: 10px;">BEAUTIFY</h1>
+            <p style="color: var(--text-muted);">正在加載管理數據...</p>
+        </div>
+    </div>
+
+    <div class="admin-container">
+        <header
+            style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; gap: 20px;">
+            <div>
+                <h1>ADMIN | 後台管理</h1>
+                <p class="subtitle">營收概括與訂單管理系統</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-primary" onclick="loadData()"
+                    style="width: auto; padding: 12px 24px; margin: 0;">重新整理</button>
+                <button class="btn-primary" onclick="location.href='index.html'"
+                    style="width: auto; padding: 12px 24px; margin: 0; background: #333; color: white;">返回前台</button>
+            </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">總營收</div>
+                <div class="stat-value" id="totalIncome">NT$ 0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">總訂單數</div>
+                <div class="stat-value" id="totalCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">設計師業績</div>
+                <div id="designer-stats" style="margin-top: 10px; font-size: 12px; line-height: 1.8;">
+                    載入中...
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 20px; border-bottom: 2px solid rgba(255,255,255,0.05); margin-bottom: 30px;">
+            <div class="tab active" onclick="switchAdminTab('bookings')" id="tab-bookings">預約管理</div>
+            <div class="tab" onclick="switchAdminTab('designers')" id="tab-designers">人員管理</div>
+            <div class="tab" onclick="switchAdminTab('groups')" id="tab-groups">時段群組管理</div>
+            <div class="tab" onclick="switchAdminTab('promos')" id="tab-promos">優惠碼管理</div>
+        </div>
+
+        <!-- Booking List View -->
+        <div id="view-bookings">
+            <section class="card" style="padding: 10px;">
+                <div class="section-title" style="padding: 15px 15px 0 15px;">所有預約訂單</div>
+                <div style="overflow-x: auto;">
+                    <table id="bookingTable">
+                        <thead>
+                            <tr>
+                                <th>單號</th>
+                                <th>顧客</th>
+                                <th>設計師</th>
+                                <th>服務項目</th>
+                                <th>日期時間</th>
+                                <th>金額</th>
+                                <th>狀態管理</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booking-list">
+                            <!-- Data rows here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Designer Management View -->
+        <div id="view-designers" class="hidden">
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                <button class="btn-primary" style="width: auto; padding: 10px 20px;" onclick="addDesigner()">+
+                    新增設計師</button>
+            </div>
+            <section class="card" style="padding: 10px;">
+                <div class="section-title" style="padding: 15px 15px 0 15px;">設計師 / 美容師名冊</div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>美照</th>
+                                <th>姓名</th>
+                                <th>專業領域</th>
+                                <th>工作時數</th>
+                                <th>休假日</th>
+                                <th>時段間隔</th>
+                                <th>目前狀態</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="designer-list-admin">
+                            <!-- Designer rows here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Slot Groups View -->
+        <div id="view-groups" class="hidden">
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                <button class="btn-primary" style="width: auto; padding: 10px 20px;" onclick="openGroupModal()">+
+                    新增時段群組</button>
+            </div>
+            <section class="card" style="padding: 10px;">
+                <div class="section-title" style="padding: 15px 15px 0 15px;">時段群組清單</div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>群組名稱</th>
+                                <th>包含時段</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="group-list-admin"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Promo Code Management View -->
+        <div id="view-promos" class="hidden">
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                <button class="btn-primary" style="width: auto; padding: 10px 20px;" onclick="openPromoModal()">+
+                    新增優惠碼</button>
+            </div>
+            <section class="card" style="padding: 10px;">
+                <div class="section-title" style="padding: 15px 15px 0 15px;">優惠碼統計與管理</div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>優惠碼</th>
+                                <th>描述</th>
+                                <th>對象/推薦人</th>
+                                <th>帶客數 (人)</th>
+                                <th>狀態</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="promo-list-admin"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Designer Modal -->
+    <div id="designerModal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="modalTitle">新增設計師</h2>
+            <input type="hidden" id="editDesignerId">
+            <div class="form-group">
+                <label>姓名</label>
+                <input type="text" id="designerName" placeholder="例如：Alice">
+            </div>
+            <div class="form-group">
+                <label>專業領域</label>
+                <input type="text" id="designerSpecialty" placeholder="例如：專業美甲師">
+            </div>
+            <div class="form-group">
+                <label>休假日</label>
+                <input type="text" id="designerOffDays" placeholder="例如：Monday">
+            </div>
+            <div class="form-group">
+                <label>所屬時段群組 (套用後將覆蓋手動設定)</label>
+                <select id="designerGroupId"
+                    style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 10px; color: white;">
+                    <option value="">-- 手動模式 (使用下方時間設定) --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>服務開始時間</label>
+                <select id="designerStartHour"
+                    style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 10px; color: white;">
+                    <option value="8">08:00</option>
+                    <option value="9">09:00</option>
+                    <option value="10" selected>10:00</option>
+                    <option value="11">11:00</option>
+                    <option value="12">12:00</option>
+                    <option value="13">13:00</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>服務結束時間</label>
+                <select id="designerEndHour"
+                    style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 10px; color: white;">
+                    <option value="18">18:00</option>
+                    <option value="19">19:00</option>
+                    <option value="20" selected>20:00</option>
+                    <option value="21">21:00</option>
+                    <option value="22">22:00</option>
+                    <option value="23">23:00</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>時段間隔 (分鐘)</label>
+                <select id="designerSlotInterval"
+                    style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 10px; color: white;">
+                    <option value="30">30 分鐘</option>
+                    <option value="45">45 分鐘</option>
+                    <option value="60">60 分鐘</option>
+                    <option value="90">90 分鐘</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>照片 URL</label>
+                <input type="text" id="designerPhoto" placeholder="https://...">
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn-primary" onclick="saveDesigner()">儲存資料</button>
+                <button class="btn-primary" style="background: #333;" onclick="closeModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Group Modal -->
+    <div id="groupModal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="groupModalTitle">新增時段群組</h2>
+            <input type="hidden" id="editGroupId">
+            <div class="form-group">
+                <label>群組名稱</label>
+                <input type="text" id="groupName" placeholder="例如：早班群組">
+            </div>
+            <div class="form-group">
+                <label>包含時段 (以半形逗點分隔，如 10:00,11:30,14:00)</label>
+                <textarea id="groupSlots" rows="4"
+                    style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 10px; color: white; outline: none;"></textarea>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn-primary" onclick="saveSlotGroup()">儲存群組</button>
+                <button class="btn-primary" style="background: #333;" onclick="closeGroupModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>

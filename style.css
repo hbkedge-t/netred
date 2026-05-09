@@ -1,0 +1,394 @@
+/* 
+ * Beauty Reservation System - Premium Design System
+ */
+
+:root {
+  --primary: #D4AF37;
+  /* Champagne Gold */
+  --secondary: #1A1A1A;
+  /* Deep Charcoal */
+  --accent: #FFFAF0;
+  /* Floral White */
+  --bg: #0F0F0F;
+  --surface: rgba(255, 255, 255, 0.05);
+  /* Glassmorphism background */
+  --text: #E0E0E0;
+  --text-muted: #A0A0A0;
+  --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  /* Allow scrolling on body */
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 20px 20px 120px 20px;
+  /* Space for fixed bottom nav and button */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Glassmorphism Card Style */
+.card {
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: var(--transition);
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(to right, #D4AF37, #C5A028);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+/* Sections */
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title::after {
+  content: '';
+  flex-grow: 1;
+  height: 1px;
+  background: linear-gradient(to right, rgba(212, 175, 55, 0.5), transparent);
+}
+
+/* Item Grids */
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Designer Card */
+.designer-card {
+  text-align: center;
+}
+
+.designer-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary);
+  margin-bottom: 12px;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+/* Selected State */
+.selected {
+  border: 2px solid var(--primary) !important;
+  background: rgba(212, 175, 55, 0.1) !important;
+}
+
+/* Buttons */
+.btn-primary {
+  width: 100%;
+  background: linear-gradient(135deg, #D4AF37, #B08D26);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: auto;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+  transition: var(--transition);
+}
+
+.btn-primary:disabled {
+  background: #333;
+  color: #666;
+  box-shadow: none;
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(26, 26, 26, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0 25px 0;
+  z-index: 1000;
+}
+
+.nav-item {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+  flex: 1;
+}
+
+.nav-item.active {
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.nav-item div {
+  margin-top: 4px;
+}
+
+/* Adjust app container for bottom nav */
+#app {
+  padding-bottom: 90px;
+}
+
+/* Status Badges & Buttons */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.pending {
+  background: rgba(212, 175, 55, 0.2);
+  color: #D4AF37;
+}
+
+.confirmed {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+}
+
+.cancelled {
+  background: rgba(244, 67, 54, 0.2);
+  color: #F44336;
+}
+
+.completed {
+  background: rgba(33, 150, 243, 0.2);
+  color: #2196F3;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid #F44336;
+  color: #F44336;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  width: 100%;
+  transition: var(--transition);
+}
+
+.btn-cancel:active {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+/* Time Slot Selector */
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.slot {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.slot:active {
+  transform: scale(0.95);
+}
+
+.slot.selected {
+  background: var(--primary) !important;
+  color: #000 !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.slot.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: #222 !important;
+  border-color: #333 !important;
+  color: #666 !important;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Modal System */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-content {
+  background: #1A1A1A;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 10px;
+  color: white;
+  outline: none;
+  transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+/* Custom select options */
+select option {
+  background: #222;
+  color: white;
+  padding: 10px;
+}
+
+/* Status Bar */
+.step-indicator {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.step-indicator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #333;
+  z-index: 1;
+}
+
+.step {
+  width: 30px;
+  height: 30px;
+  background: #1A1A1A;
+  border: 1px solid #333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  z-index: 2;
+  transition: var(--transition);
+}
+
+.step.active {
+  background: var(--primary);
+  color: #000;
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}

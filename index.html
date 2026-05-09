@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>線上美學預約系統</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header>
+            <h1>BEAUTIFY </h1>
+            <p class="subtitle">專業美學 ‧ 極致享受</p>
+        </header>
+
+        <!-- Progress Indicator -->
+        <div class="step-indicator">
+            <div class="step active" id="s1">1</div>
+            <div class="step" id="s2">2</div>
+            <div class="step" id="s3">3</div>
+            <div class="step" id="s4">4</div>
+        </div>
+
+        <!-- Step 1: Promo Code Selection -->
+        <section id="step1" class="card">
+            <div class="section-title">請輸入優惠碼</div>
+            <div class="input-group">
+                <input type="text" id="promoCodeInput" placeholder="輸入您的優惠碼" class="card" style="width: 100%; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; padding: 15px; margin-bottom: 10px;">
+                <p id="promo-msg" style="font-size: 12px; margin-top: 5px;"></p>
+            </div>
+            <div style="font-size: 14px; color: grey; margin-top: 20px;">
+                💡 請輸入有效的優惠碼以進行下一步預約
+            </div>
+        </section>
+
+        <!-- Step 2: Service Selection -->
+        <section id="step2" class="card hidden">
+            <div class="section-title">選擇服務項目</div>
+            <div id="service-list" class="item-list">
+                <!-- Services injected here -->
+            </div>
+        </section>
+
+        <!-- Step 3: Date & Time Selection -->
+        <section id="step3" class="card hidden">
+            <div class="section-title">選擇日期</div>
+            <input type="date" id="dateInput" class="card" style="width: 100%; border: none; background: rgba(0,0,0,0.3); color: white; margin-bottom: 20px;">
+            
+            <div class="section-title">選擇預約時段</div>
+            <div id="slot-list" class="slot-grid">
+                <!-- Slots injected here -->
+            </div>
+        </section>
+
+        <!-- Step 4: Personal Info & Summary -->
+        <section id="step4" class="card hidden">
+            <div class="section-title">填寫聯絡資訊</div>
+            <div class="input-group" style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 14px; color: grey;">姓名</label>
+                <input type="text" id="clientName" placeholder="請輸入姓名" class="card" style="width: 100%; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; padding: 12px;">
+            </div>
+            <div class="input-group" style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 14px; color: grey;">電話</label>
+                <input type="tel" id="clientPhone" placeholder="請輸入電話" class="card" style="width: 100%; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; padding: 12px;">
+            </div>
+
+            <div class="section-title">確認預約資訊</div>
+            <div id="summary" class="item-list" style="margin-bottom: 20px;">
+                <!-- Summary content here -->
+            </div>
+            <div class="card" style="background: rgba(212, 175, 55, 0.05); text-align: center;">
+              📢 本預約需預付 <b>NT$ 500</b> 訂金<br>
+              <small style="color: grey;">取消預訂需於 24 小時前告知</small>
+            </div>
+        </section>
+
+        <!-- Action Button -->
+        <button id="nextBtn" class="btn-primary" disabled>下一步</button>
+
+        <!-- History View (Initially Hidden) -->
+        <section id="history-view" class="hidden" style="flex: 1; overflow-y: auto;">
+            <div class="section-title">我的預約紀錄</div>
+            <div id="booking-history" class="item-list">
+                <!-- History injected here -->
+            </div>
+        </section>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+          <div class="nav-item active" onclick="switchView('booking')" id="nav-booking">
+             <span style="font-size: 18px;">📅</span>
+             <div>我要預約</div>
+          </div>
+          <div class="nav-item" onclick="switchView('history')" id="nav-history">
+             <span style="font-size: 18px;">📋</span>
+             <div>預約紀錄</div>
+          </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

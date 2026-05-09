@@ -2,7 +2,7 @@
  * LINE Beauty Reservation System - Frontend Logic
  */
 
-const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbxahnVJxKNcSdETGFAOGpwRJ4RqFW3O-IlqUl3V4zhg8O0yWS-_hoX9bITzpPkmVECa/exec';
+const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbwNoe7kpnCulpFK3Qv3Y4LHg6QeCN7SuBzpQjeFip2UEzTdHAuu8IT8HDTJkEbRuAqd/exec';
 
 let currentStep = 1;
 let selectedData = {

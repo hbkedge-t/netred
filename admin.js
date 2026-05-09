@@ -2,7 +2,7 @@
  * BEAUTIFY Admin Management Logic
  */
 
-const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbxahnVJxKNcSdETGFAOGpwRJ4RqFW3O-IlqUl3V4zhg8O0yWS-_hoX9bITzpPkmVECa/exec';
+const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbwNoe7kpnCulpFK3Qv3Y4LHg6QeCN7SuBzpQjeFip2UEzTdHAuu8IT8HDTJkEbRuAqd/exec';
 
 // MOVE THIS TO THE TOP to ensure it's defined
 window.switchAdminTab = function (tab) {

@@ -422,6 +422,37 @@
         </div>
     </div>
 
+    <!-- Promo Code Modal -->
+    <div id="promoModal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="promoModalTitle">新增優惠碼</h2>
+            <div class="form-group">
+                <label>優惠碼 (必填)</label>
+                <input type="text" id="promoCode" placeholder="例如：HELLO2024">
+            </div>
+            <div class="form-group">
+                <label>描述</label>
+                <input type="text" id="promoDesc" placeholder="例如：新朋友 8 折優惠">
+            </div>
+            <div class="form-group">
+                <label>對象/推薦人 ID</label>
+                <input type="text" id="promoReferral" placeholder="推薦人姓名或 ID">
+            </div>
+            <div class="form-group">
+                <label>狀態</label>
+                <select id="promoStatus"
+                    style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 10px; color: white;">
+                    <option value="Active">🟢 啟用中</option>
+                    <option value="Inactive">🔴 已停用</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn-primary" onclick="savePromoCode()">儲存優惠碼</button>
+                <button class="btn-primary" style="background: #333;" onclick="closePromoModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
     <script src="admin.js"></script>
 </body>
 

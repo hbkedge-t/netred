@@ -25,7 +25,7 @@ let selectedData = {
  */
 async function initLiff() {
   try {
-    await liff.init({ liffId: '2009603120-0Fkrf3bm' });
+    await liff.init({ liffId: '2009603120-Xi7ibdX7' });
     if (!liff.isLoggedIn()) {
       liff.login();
     } else {

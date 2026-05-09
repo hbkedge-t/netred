@@ -37,6 +37,11 @@ async function initLiff() {
       // Update User Profile in GAS (Module 3 CRM)
       await apiPost('updateUser', { userId: profile.userId, displayName: profile.displayName });
       
+      // Set today's date as default
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('dateInput').value = today;
+      selectedData.date = today;
+
       // Auto-focus promo code input
       document.getElementById('promoCodeInput').value = '';
       document.getElementById('nextBtn').disabled = false;
@@ -123,12 +128,12 @@ async function verifyPromoCode() {
 
   try {
     msgEl.innerText = '正在驗證...';
-    msgEl.style.color = 'white';
+    msgEl.className = 'msg-loading';
     const result = await apiGet('verifyPromoCode', { code });
     if (result.valid) {
       selectedData.promoCode = code;
       msgEl.innerText = '✅ 驗證成功！';
-      msgEl.style.color = 'var(--primary)';
+      msgEl.style.color = '#c5a059';
       return true;
     } else {
       msgEl.innerText = '❌ ' + result.message;
@@ -302,6 +307,10 @@ function transitionStep(from, to) {
   document.getElementById(`step${to}`).classList.remove('hidden');
   document.getElementById(`s${to}`).classList.add('active');
   document.getElementById('nextBtn').disabled = true;
+  
+  if (to === 3) {
+    loadSlots(); // Auto-load when moving to date/time step
+  }
   
   if (to === 4) btn.innerText = '立即預約並支付訂金';
   else btn.innerText = '下一步';

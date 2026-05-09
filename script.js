@@ -2,7 +2,7 @@
  * LINE Beauty Reservation System - Frontend Logic
  */
 
-const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbxahnVJxKNcSdETGFAOGpwRJ4RqFW3O-IlqUl3V4zhg8O0yWS-_hoX9bITzpPkmVECa/exec';
+const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbztR_WF-aBLW24jBZFfiUQRdy3QlXlrioAktTvgerIERlHPgQqPUCvDyf-24CdtYXcviA/exec';
 
 let currentStep = 1;
 let selectedData = {
@@ -25,7 +25,7 @@ let selectedData = {
  */
 async function initLiff() {
   try {
-    await liff.init({ liffId: '2009603120-Xi7ibdX7' });
+    await liff.init({ liffId: '2009603120-0Fkrf3bm' });
     if (!liff.isLoggedIn()) {
       liff.login();
     } else {
@@ -79,9 +79,18 @@ function switchView(view) {
 async function apiGet(action, params = {}) {
   const query = new URLSearchParams({ action, ...params }).toString();
   const response = await fetch(`${GAS_APP_URL}?${query}`);
-  const result = await response.json();
-  if (result.success) return result.data;
-  throw new Error(result.error);
+  try {
+    const result = await response.json();
+    if (result.success) return result.data;
+    throw new Error(result.error || 'Backend Error');
+  } catch (e) {
+    const text = await response.text();
+    console.error('API Response Text:', text);
+    if (text.includes('script.google.com')) {
+      throw new Error('伺服器環境錯誤 (500)，請檢查 GAS 部署權限或試算表 ID');
+    }
+    throw new Error(`解析失敗: ${e.message}`);
+  }
 }
 
 async function apiPost(action, data) {
@@ -121,7 +130,7 @@ async function verifyPromoCode() {
       return false;
     }
   } catch (err) {
-    msgEl.innerText = '❌ 系統錯誤';
+    msgEl.innerText = '❌ 系統錯誤: ' + err.message;
     msgEl.style.color = '#ff4d4d';
     return false;
   }

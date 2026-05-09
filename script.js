@@ -3,6 +3,7 @@
  */
 
 const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbxahnVJxKNcSdETGFAOGpwRJ4RqFW3O-IlqUl3V4zhg8O0yWS-_hoX9bITzpPkmVECa/exec';
+
 let currentStep = 1;
 let selectedData = {
   promoCode: null,
@@ -78,17 +79,17 @@ function switchView(view) {
 async function apiGet(action, params = {}) {
   const query = new URLSearchParams({ action, ...params }).toString();
   const response = await fetch(`${GAS_APP_URL}?${query}`);
+  const text = await response.text(); // Read once
   try {
-    const result = await response.json();
+    const result = JSON.parse(text);
     if (result.success) return result.data;
     throw new Error(result.error || 'Backend Error');
   } catch (e) {
-    const text = await response.text();
     console.error('API Response Text:', text);
     if (text.includes('script.google.com')) {
       throw new Error('伺服器環境錯誤 (500)，請檢查 GAS 部署權限或試算表 ID');
     }
-    throw new Error(`解析失敗: ${e.message}`);
+    throw new Error(`解析失敗: ${e.message || '未知錯誤'}`);
   }
 }
 
@@ -97,9 +98,15 @@ async function apiPost(action, data) {
     method: 'POST',
     body: JSON.stringify(data)
   });
-  const result = await response.json();
-  if (result.success) return result.data;
-  throw new Error(result.error);
+  const text = await response.text();
+  try {
+    const result = JSON.parse(text);
+    if (result.success) return result.data;
+    throw new Error(result.error || 'Backend Error');
+  } catch (e) {
+    console.error('API Post Response Text:', text);
+    throw new Error(`操作失敗: ${e.message || '伺服器無回應'}`);
+  }
 }
 
 /**

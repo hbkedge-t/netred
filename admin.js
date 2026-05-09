@@ -172,10 +172,10 @@ function renderPromoAdmin(promos) {
 
     container.innerHTML = promos.map(p => `
         <tr>
-            <td><strong>${p.code}</strong></td>
-            <td>${p.description}</td>
-            <td>${p.referral}</td>
-            <td style="text-align: center;"><span style="color: var(--primary); font-weight: bold; font-size: 18px;">${p.count}</span></td>
+            <td><strong>${p.code || '--'}</strong></td>
+            <td>${p.description || '--'}</td>
+            <td>${p.referral || '--'}</td>
+            <td style="text-align: center;"><span style="color: var(--primary); font-weight: bold; font-size: 18px;">${p.count || 0}</span></td>
             <td>${p.status || 'Active'}</td>
             <td>
                 <div style="display: flex; gap: 5px;">
@@ -194,8 +194,8 @@ window.openPromoModal = function (code) {
         document.getElementById('promoModalTitle').innerText = '編輯優惠碼';
         document.getElementById('promoCode').value = p.code;
         document.getElementById('promoCode').disabled = true;
-        document.getElementById('promoDesc').value = p.description;
-        document.getElementById('promoReferral').value = p.referral;
+        document.getElementById('promoDesc').value = p.description || '';
+        document.getElementById('promoReferral').value = p.referral || '';
         document.getElementById('promoStatus').value = p.status || 'Active';
     } else {
         document.getElementById('promoModalTitle').innerText = '新增優惠碼';

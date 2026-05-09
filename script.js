@@ -2,8 +2,7 @@
  * LINE Beauty Reservation System - Frontend Logic
  */
 
-const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbztR_WF-aBLW24jBZFfiUQRdy3QlXlrioAktTvgerIERlHPgQqPUCvDyf-24CdtYXcviA/exec';
-
+const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbxahnVJxKNcSdETGFAOGpwRJ4RqFW3O-IlqUl3V4zhg8O0yWS-_hoX9bITzpPkmVECa/exec';
 let currentStep = 1;
 let selectedData = {
   promoCode: null,
@@ -25,7 +24,7 @@ let selectedData = {
  */
 async function initLiff() {
   try {
-    await liff.init({ liffId: '2009603120-0Fkrf3bm' });
+    await liff.init({ liffId: '2009603120-Xi7ibdX7' });
     if (!liff.isLoggedIn()) {
       liff.login();
     } else {

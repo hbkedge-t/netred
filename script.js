@@ -196,7 +196,7 @@ async function loadSlots() {
     // We don't pass designerId anymore, let backend pick default
     const slots = await apiGet('getAvailableSlots', { date: dateStr });
     if (slots.length === 0) {
-      container.innerHTML = '<div style="grid-column: span 3; text-align: center; color: grey; padding: 20px;">此日期尚無可預約時段</div>';
+      container.innerHTML = '<div style="grid-column: span 3; text-align: center; color: #ff4d4d; padding: 20px;">此日期非預約開放日或已額滿<br><small style="color: grey;">(開放時間：週三、週六 14:00-21:00)</small></div>';
       return;
     }
 

@@ -356,7 +356,7 @@ async function finalizeBooking() {
         <div style="font-size: 60px; color: var(--primary); margin-bottom: 20px;">✓</div>
         <h2>預約成功！</h2>
         <p style="color: grey; margin: 15px 0;">感謝您的預約。</p>
-        <button class="btn-primary" onclick="liff.closeWindow()">關閉並返回 LINE</button>
+        <button class="btn-primary" onclick="closeLiff()">關閉並返回 LINE</button>
       </div>
     `;
   } catch (err) {
@@ -365,10 +365,23 @@ async function finalizeBooking() {
   }
 }
 
+async function closeLiff() {
+  if (typeof liff !== 'undefined' && liff.isInClient()) {
+    liff.closeWindow();
+  } else {
+    window.close();
+    // For browsers that block window.close(), show a message
+    setTimeout(() => {
+      alert("請手動關閉此視窗");
+    }, 500);
+  }
+}
+
 // Listeners
 document.getElementById('dateInput').addEventListener('change', loadSlots);
 window.switchView = switchView;
 window.cancelBooking = cancelBooking;
+window.closeLiff = closeLiff;
 
 // Load
 initLiff();

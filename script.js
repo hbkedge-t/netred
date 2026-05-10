@@ -256,7 +256,7 @@ async function loadHistory() {
 }
 
 async function cancelBooking(bookingId) {
-  if (!confirm('確定要取消這項預約嗎？\n(提前 24 小時前取消不扣款)')) return;
+  if (!confirm('確定要取消這項預約嗎？')) return;
   try {
     await apiPost('cancelBooking', { bookingId, userId: selectedData.userId });
     loadHistory();
@@ -312,7 +312,7 @@ function transitionStep(from, to) {
     loadSlots(); // Auto-load when moving to date/time step
   }
 
-  if (to === 4) btn.innerText = '立即預約並支付訂金';
+  if (to === 4) btn.innerText = '立即預約';
   else btn.innerText = '下一步';
 
   currentStep = to;
@@ -340,7 +340,7 @@ function showSummary() {
 async function finalizeBooking() {
   try {
     btn.disabled = true;
-    btn.innerText = '正在處理支付...';
+    btn.innerText = '正在處理預約...';
 
     const payload = {
       ...selectedData,

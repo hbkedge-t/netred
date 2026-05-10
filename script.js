@@ -157,17 +157,19 @@ async function loadServices() {
     const services = await apiGet('getServices');
     container.innerHTML = services.map(s => {
       const sanitizedId = s.Name.replace(/\s+/g, '');
-      const originalPrice = s.OriginalPrice || s.originalPrice; // Support both cases
-      const hasPromo = originalPrice && originalPrice > s.Price;
+      // 確保價格為數字進行比較
+      const price = parseFloat(s.Price || 0);
+      const originalPrice = parseFloat(s.OriginalPrice || s.originalPrice || 0);
+      const hasPromo = originalPrice > price;
       
       return `
-      <div class="card" onclick="selectService('${s.Name}', ${s.Price}, ${s.DurationMin})" id="s-${sanitizedId}">
+      <div class="card" onclick="selectService('${s.Name}', ${price}, ${s.DurationMin})" id="s-${sanitizedId}">
         <div style="font-weight: 600;">${s.Name}</div>
         <div style="display: flex; justify-content: space-between; align-items: flex-end; font-size: 14px; margin-top: 8px;">
           <span>${s.DurationMin} 分鐘</span>
           <div style="text-align: right;">
             ${hasPromo ? `<div style="color: #888; text-decoration: line-through; font-size: 12px; margin-bottom: -2px;">NT$ ${originalPrice}</div>` : ''}
-            <div style="color: var(--primary); font-weight: bold; font-size: 16px;">NT$ ${s.Price}</div>
+            <div style="color: var(--primary); font-weight: bold; font-size: 16px;">NT$ ${price}</div>
           </div>
         </div>
       </div>

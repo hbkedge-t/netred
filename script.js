@@ -246,6 +246,9 @@ async function loadHistory() {
     container.innerHTML = bookings.map(b => {
       const bDate = new Date(b.DateTime);
       const isCancelable = (bDate - new Date()) > 24 * 60 * 60 * 1000;
+      const statusText = b.Status || b.status || 'Pending';
+      const statusCls = String(statusText).toLowerCase().replace(/ /g, '-');
+      
       return `
         <div class="card">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
@@ -253,9 +256,9 @@ async function loadHistory() {
               <div style="font-weight:600; color: var(--primary);">${b.ServiceName}</div>
               <small style="color: grey;">${b.DateTime}</small>
             </div>
-            <span class="status-badge ${b.Status.toLowerCase().replace(/ /g, '-')}">${b.Status}</span>
+            <span class="status-badge ${statusCls}">${statusText}</span>
           </div>
-          ${(b.Status === 'Pending' || b.Status === 'Confirmed') && isCancelable ?
+          ${(statusText === 'Pending' || statusText === 'Confirmed') && isCancelable ?
           `<button class="btn-cancel" onclick="cancelBooking('${b.ID}')">取消預約</button>` : ''}
         </div>
       `;

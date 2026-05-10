@@ -260,7 +260,9 @@ async function loadHistory() {
         </div>
       `;
     }).join('');
-  } catch (err) { container.innerHTML = '無法載入紀錄'; }
+  } catch (err) { 
+    container.innerHTML = `<div style="text-align:center; padding: 20px; color: #ff4d4d;">無法載入紀錄<br><small style="color: grey;">${err.message}</small></div>`; 
+  }
 }
 
 async function cancelBooking(bookingId) {

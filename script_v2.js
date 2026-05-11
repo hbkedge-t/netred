@@ -234,17 +234,26 @@ async function loadSlots() {
     const currentService = selectedData.serviceName;
 
     container.innerHTML = slots.map(s => {
-      // Convert date format from YYYY-MM-DD to YYYY/MM/DD to match spreadsheet
+      // Robust date formatting
       const formattedDate = dateStr.replace(/-/g, '/');
-      const dateTimeStr = `${formattedDate} ${s.time}`;
+      const targetDateTime = `${formattedDate} ${s.time}`.trim();
+      const targetService = String(currentService || '').trim();
       
-      // Check if this specific service + time is already in Bookings sheet (Column F & G)
-      const isAlreadyBooked = allBookings.some(b => 
-        // Use ServiceName1 to match Column F Course Name
-        (String(b.ServiceName1) === String(currentService) || String(b.ServiceName) === String(currentService)) && 
-        String(b.DateTime) === String(dateTimeStr) &&
-        (b.Status !== 'Cancelled' && b.Status !== '🚫 已取消' && b.Status !== '已取消')
-      );
+      // Check if this specific service + time is already in Bookings sheet
+      const isAlreadyBooked = allBookings.some(b => {
+        // Try multiple possible property names just in case
+        const bService = String(b.ServiceName1 || b.ServiceName || b.serviceName1 || b.serviceName || '').trim();
+        const bDateTime = String(b.DateTime || b.dateTime || b.datetime || '').trim();
+        const bStatus = String(b.Status || b.status || '').trim();
+        
+        // Match both hyphen and slash dates
+        const bDateTimeNormalized = bDateTime.replace(/-/g, '/');
+        const targetDateTimeNormalized = targetDateTime.replace(/-/g, '/');
+
+        return (bService === targetService) && 
+               (bDateTimeNormalized === targetDateTimeNormalized) &&
+               (bStatus !== 'Cancelled' && bStatus !== '🚫 已取消' && bStatus !== '已取消');
+      });
 
       // Robust check for availability (handle boolean or string "true"/"false")
       const isAvailable = (s.available === true || s.available === 'true') && !isAlreadyBooked;

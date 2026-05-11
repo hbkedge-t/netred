@@ -234,11 +234,14 @@ async function loadSlots() {
     const currentService = selectedData.serviceName;
 
     container.innerHTML = slots.map(s => {
-      const dateTimeStr = `${dateStr} ${s.time}`;
+      // Convert date format from YYYY-MM-DD to YYYY/MM/DD to match spreadsheet
+      const formattedDate = dateStr.replace(/-/g, '/');
+      const dateTimeStr = `${formattedDate} ${s.time}`;
       
       // Check if this specific service + time is already in Bookings sheet (Column F & G)
       const isAlreadyBooked = allBookings.some(b => 
-        String(b.ServiceName) === String(currentService) && 
+        // Use ServiceName1 to match Column F Course Name
+        (String(b.ServiceName1) === String(currentService) || String(b.ServiceName) === String(currentService)) && 
         String(b.DateTime) === String(dateTimeStr) &&
         (b.Status !== 'Cancelled' && b.Status !== '🚫 已取消' && b.Status !== '已取消')
       );

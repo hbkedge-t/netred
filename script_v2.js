@@ -210,8 +210,17 @@ async function loadSlots() {
   container.innerHTML = '<div style="grid-column: span 3; text-align: center; color: grey;">載入時段中...</div>';
 
   try {
-    // We don't pass designerId anymore, let backend pick default
+    // 1. Get available slots from backend
     const slots = await apiGet('getAvailableSlots', { date: dateStr });
+    
+    // 2. Fetch all bookings to verify service-specific occupancy
+    let allBookings = [];
+    try {
+      allBookings = await apiGet('getAllBookings');
+    } catch (e) {
+      console.warn('Unable to fetch all bookings for extra verification:', e);
+    }
+
     if (slots.length === 0) {
       container.innerHTML = '<div style="grid-column: span 3; text-align: center; color: #ff4d4d; padding: 20px;">此日期非預約開放日或已額滿<br><small style="color: grey;">(開放時間：週三、週六 14:00-21:00)</small></div>';
       return;
@@ -222,9 +231,21 @@ async function loadSlots() {
       selectedData.designerId = slots[0].designerId;
     }
 
+    const currentService = selectedData.serviceName;
+
     container.innerHTML = slots.map(s => {
+      const dateTimeStr = `${dateStr} ${s.time}`;
+      
+      // Check if this specific service + time is already in Bookings sheet (Column F & G)
+      const isAlreadyBooked = allBookings.some(b => 
+        String(b.ServiceName) === String(currentService) && 
+        String(b.DateTime) === String(dateTimeStr) &&
+        (b.Status !== 'Cancelled' && b.Status !== '🚫 已取消' && b.Status !== '已取消')
+      );
+
       // Robust check for availability (handle boolean or string "true"/"false")
-      const isAvailable = (s.available === true || s.available === 'true');
+      const isAvailable = (s.available === true || s.available === 'true') && !isAlreadyBooked;
+      
       const cls = isAvailable ? '' : 'disabled';
       const attr = isAvailable ? `onclick="selectSlot('${s.time}')"` : '';
       const label = isAvailable ? s.time : `${s.time} (已滿)`;

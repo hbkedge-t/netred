@@ -314,6 +314,7 @@ h1::after {
   background: #F5F5F5 !important;
   border-color: #E0E0E0 !important;
   color: #BDBDBD !important;
+  pointer-events: none;
 }
 
 /* Animations */

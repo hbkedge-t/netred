@@ -198,6 +198,15 @@ async function loadSlots() {
   selectedData.date = dateStr;
   selectedData.time = null;
   document.getElementById('nextBtn').disabled = true;
+
+  // Check if day is Wednesday (3) or Saturday (6)
+  const selDate = new Date(dateStr);
+  const day = selDate.getDay();
+  if (day !== 3 && day !== 6) {
+    container.innerHTML = '<div style="grid-column: span 3; text-align: center; color: #ff4d4d; padding: 20px;">此日期非預約開放日<br><small style="color: grey;">(僅每週三、六開放預約)</small></div>';
+    return;
+  }
+
   container.innerHTML = '<div style="grid-column: span 3; text-align: center; color: grey;">載入時段中...</div>';
 
   try {
@@ -214,9 +223,11 @@ async function loadSlots() {
     }
 
     container.innerHTML = slots.map(s => {
-      const cls = s.available ? '' : 'disabled';
-      const attr = s.available ? `onclick="selectSlot('${s.time}')"` : '';
-      const label = s.available ? s.time : `${s.time} (已預訂)`;
+      // Robust check for availability (handle boolean or string "true"/"false")
+      const isAvailable = (s.available === true || s.available === 'true');
+      const cls = isAvailable ? '' : 'disabled';
+      const attr = isAvailable ? `onclick="selectSlot('${s.time}')"` : '';
+      const label = isAvailable ? s.time : `${s.time} (已滿)`;
       return `<div class="slot ${cls}" ${attr} id="t-${s.time.replace(/[: ]/g, '')}">${label}</div>`;
     }).join('');
   } catch (err) { container.innerHTML = '無法加載數據'; }

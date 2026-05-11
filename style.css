@@ -3,18 +3,22 @@
  */
 
 :root {
-  --primary: #D4AF37;
-  /* Champagne Gold */
-  --secondary: #1A1A1A;
-  /* Deep Charcoal */
-  --accent: #FFFAF0;
-  /* Floral White */
-  --bg: #0F0F0F;
-  --surface: rgba(255, 255, 255, 0.05);
-  /* Glassmorphism background */
-  --text: #E0E0E0;
-  --text-muted: #A0A0A0;
+  --primary: #FFD700;
+  /* Gold/Yellow */
+  --secondary: #FFF9C4;
+  /* Light Yellow Background */
+  --accent: #FFC107;
+  /* Amber */
+  --bg: #FFFEF2;
+  /* Very Light Cream */
+  --surface: #FFFFFF;
+  /* White Surface */
+  --text: #424242;
+  /* Dark Grey Text */
+  --text-muted: #757575;
+  /* Muted Text */
   --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --star-color: #FFD700;
 }
 
 * {
@@ -27,11 +31,41 @@
 body {
   font-family: 'Outfit', 'Inter', sans-serif;
   background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 20%);
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
-  /* Allow scrolling on body */
   min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '★';
+  position: fixed;
+  top: 10%;
+  left: 5%;
+  font-size: 24px;
+  color: var(--primary);
+  opacity: 0.2;
+  animation: twinkle 3s infinite ease-in-out;
+}
+
+body::after {
+  content: '★';
+  position: fixed;
+  bottom: 15%;
+  right: 10%;
+  font-size: 18px;
+  color: var(--primary);
+  opacity: 0.15;
+  animation: twinkle 4s infinite ease-in-out 1s;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.2); }
 }
 
 #app {
@@ -48,13 +82,11 @@ body {
 /* Glassmorphism Card Style */
 .card {
   background: var(--surface);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.2);
   border-radius: 20px;
   padding: 24px;
   margin-bottom: 16px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
   transition: var(--transition);
   animation: slideUp 0.6s ease-out forwards;
 }
@@ -67,9 +99,18 @@ h1 {
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 8px;
-  background: linear-gradient(to right, #D4AF37, #C5A028);
+  background: linear-gradient(to right, #FFD700, #FFA000);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h1::after {
+  content: '✦';
+  font-size: 20px;
+  -webkit-text-fill-color: var(--primary);
 }
 
 .subtitle {
@@ -92,7 +133,7 @@ h1 {
   content: '';
   flex-grow: 1;
   height: 1px;
-  background: linear-gradient(to right, rgba(212, 175, 55, 0.5), transparent);
+  background: linear-gradient(to right, rgba(255, 215, 0, 0.5), transparent);
 }
 
 /* Item Grids */
@@ -132,8 +173,8 @@ h1 {
 /* Buttons */
 .btn-primary {
   width: 100%;
-  background: linear-gradient(135deg, #D4AF37, #B08D26);
-  color: #000;
+  background: linear-gradient(135deg, #FFD700, #FFB300);
+  color: #3E2723;
   border: none;
   border-radius: 12px;
   padding: 16px;
@@ -141,7 +182,7 @@ h1 {
   font-weight: 700;
   cursor: pointer;
   margin-top: auto;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
   transition: var(--transition);
 }
 
@@ -157,14 +198,15 @@ h1 {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(26, 26, 26, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 215, 0, 0.2);
   display: flex;
   justify-content: space-around;
   padding: 10px 0 25px 0;
   z-index: 1000;
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
 }
 
 .nav-item {
@@ -244,14 +286,15 @@ h1 {
 }
 
 .slot {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #FFFDE7;
+  border: 1px solid rgba(255, 215, 0, 0.3);
   padding: 10px;
   text-align: center;
   border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
   transition: var(--transition);
+  color: var(--text);
 }
 
 .slot:active {
@@ -268,9 +311,9 @@ h1 {
 .slot.disabled {
   opacity: 0.3;
   cursor: not-allowed;
-  background: #222 !important;
-  border-color: #333 !important;
-  color: #666 !important;
+  background: #F5F5F5 !important;
+  border-color: #E0E0E0 !important;
+  color: #BDBDBD !important;
 }
 
 /* Animations */
@@ -284,6 +327,30 @@ h1 {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Floating Stars */
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  color: var(--primary);
+  font-size: 20px;
+  opacity: 0;
+  animation: floatStar 5s infinite ease-in-out;
+}
+
+@keyframes floatStar {
+  0%, 100% { opacity: 0; transform: translateY(0) scale(0.5) rotate(0deg); }
+  50% { opacity: 0.3; transform: translateY(-20px) scale(1.2) rotate(20deg); }
 }
 
 .hidden {
@@ -307,15 +374,15 @@ h1 {
 }
 
 .modal-content {
-  background: #1A1A1A;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #FFFFFF;
+  border: 1px solid rgba(255, 215, 0, 0.3);
   border-radius: 24px;
   width: 100%;
   max-width: 400px;
   padding: 30px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 50px rgba(255, 215, 0, 0.2);
 }
 
 .form-group {
@@ -331,11 +398,11 @@ h1 {
 
 .form-group input {
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #FFFDE7;
+  border: 1px solid rgba(255, 215, 0, 0.2);
   padding: 12px;
   border-radius: 10px;
-  color: white;
+  color: var(--text);
   outline: none;
   transition: var(--transition);
 }
@@ -348,8 +415,8 @@ h1 {
 
 /* Custom select options */
 select option {
-  background: #222;
-  color: white;
+  background: #FFFFFF;
+  color: var(--text);
   padding: 10px;
 }
 
@@ -375,8 +442,8 @@ select option {
 .step {
   width: 30px;
   height: 30px;
-  background: #1A1A1A;
-  border: 1px solid #333;
+  background: #FFFFFF;
+  border: 1px solid #FFD700;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -384,6 +451,7 @@ select option {
   font-size: 12px;
   z-index: 2;
   transition: var(--transition);
+  color: #FFD700;
 }
 
 .step.active {

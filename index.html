@@ -12,9 +12,17 @@
 </head>
 <body>
     <div id="app">
+        <!-- Floating Stars Background -->
+        <div class="stars-container">
+            <div class="star" style="top: 5%; left: 10%; animation-delay: 0s;">★</div>
+            <div class="star" style="top: 15%; left: 85%; animation-delay: 1s;">★</div>
+            <div class="star" style="top: 40%; left: 5%; animation-delay: 2s;">★</div>
+            <div class="star" style="top: 60%; left: 90%; animation-delay: 1.5s;">★</div>
+            <div class="star" style="top: 80%; left: 15%; animation-delay: 3s;">★</div>
+        </div>
         <!-- Header -->
         <header>
-            <h1>BEAUTIFY </h1>
+            <h1>BEAUTIFY ✦</h1>
             <p class="subtitle">專業美學 ‧ 極致享受</p>
         </header>
 
@@ -30,11 +38,11 @@
         <section id="step1" class="card">
             <div class="section-title">請輸入優惠碼</div>
             <div class="input-group">
-                <input type="text" id="promoCodeInput" placeholder="輸入您的優惠碼" class="card" style="width: 100%; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; padding: 15px; margin-bottom: 10px;">
+                <input type="text" id="promoCodeInput" placeholder="輸入您的優惠碼" class="card" style="width: 100%; border: 1px solid rgba(255,215,0,0.3); background: #FFFDE7; color: var(--text); padding: 15px; margin-bottom: 10px;">
                 <p id="promo-msg" style="font-size: 12px; margin-top: 5px;"></p>
             </div>
-            <div style="font-size: 14px; color: grey; margin-top: 20px;">
-                💡 請輸入有效的優惠碼以進行下一步預約
+            <div style="font-size: 14px; color: var(--text-muted); margin-top: 20px;">
+                ✨ 請輸入有效的優惠碼以進行下一步預約
             </div>
         </section>
 
@@ -49,7 +57,7 @@
         <!-- Step 3: Date & Time Selection -->
         <section id="step3" class="card hidden">
             <div class="section-title">選擇日期</div>
-            <input type="date" id="dateInput" class="card" style="width: 100%; border: none; background: rgba(0,0,0,0.3); color: white; margin-bottom: 20px;">
+            <input type="date" id="dateInput" class="card" style="width: 100%; border: 1px solid rgba(255,215,0,0.3); background: #FFFDE7; color: var(--text); margin-bottom: 20px;">
             
             <div class="section-title">選擇預約時段</div>
             <div id="slot-list" class="slot-grid">
@@ -61,12 +69,12 @@
         <section id="step4" class="card hidden">
             <div class="section-title">填寫聯絡資訊</div>
             <div class="input-group" style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 8px; font-size: 14px; color: grey;">姓名</label>
-                <input type="text" id="clientName" placeholder="請輸入姓名" class="card" style="width: 100%; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; padding: 12px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-muted);">姓名</label>
+                <input type="text" id="clientName" placeholder="請輸入姓名" class="card" style="width: 100%; border: 1px solid rgba(255,215,0,0.3); background: #FFFDE7; color: var(--text); padding: 12px;">
             </div>
             <div class="input-group" style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 8px; font-size: 14px; color: grey;">電話</label>
-                <input type="tel" id="clientPhone" placeholder="請輸入電話" class="card" style="width: 100%; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; padding: 12px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-muted);">電話</label>
+                <input type="tel" id="clientPhone" placeholder="請輸入電話" class="card" style="width: 100%; border: 1px solid rgba(255,215,0,0.3); background: #FFFDE7; color: var(--text); padding: 12px;">
             </div>
 
             <div class="section-title">確認預約資訊</div>

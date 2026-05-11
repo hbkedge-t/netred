@@ -304,10 +304,9 @@ async function loadHistory() {
         <div class="card">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
             <div>
-              <div style="font-weight:600; color: var(--primary);">${b.ServiceName}</div>
+              <div style="font-weight:600; color: var(--primary);">${b.ServiceName1 || b.ServiceName}</div>
               <small style="color: grey;">${b.DateTime}</small>
             </div>
-            <span class="status-badge ${statusCls}">${statusText}</span>
           </div>
           ${(statusText === 'Pending' || statusText === 'Confirmed') && isCancelable ?
           `<button class="btn-cancel" onclick="cancelBooking('${b.ID}')">取消預約</button>` : ''}

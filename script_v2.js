@@ -239,20 +239,25 @@ async function loadSlots() {
       const targetDateTime = `${formattedDate} ${s.time}`.trim();
       const targetService = String(currentService || '').trim();
       
+      // Normalize date for comparison (replace - with /)
+      const targetDateTimeNormalized = targetDateTime.replace(/-/g, '/');
+
       // Check if this specific service + time is already in Bookings sheet
       const isAlreadyBooked = allBookings.some(b => {
-        // Try multiple possible property names just in case
-        const bService = String(b.ServiceName1 || b.ServiceName || b.serviceName1 || b.serviceName || '').trim();
-        const bDateTime = String(b.DateTime || b.dateTime || b.datetime || '').trim();
-        const bStatus = String(b.Status || b.status || '').trim();
+        // Brute force: Search all values in the booking object for the service name and date-time
+        const bValues = Object.values(b).map(v => String(v).trim().replace(/-/g, '/'));
         
-        // Match both hyphen and slash dates
-        const bDateTimeNormalized = bDateTime.replace(/-/g, '/');
-        const targetDateTimeNormalized = targetDateTime.replace(/-/g, '/');
+        // Find if the service name exists in any field
+        const serviceMatch = bValues.some(v => v === targetService);
+        
+        // Find if the date-time exists in any field (exact or partial match)
+        const timeMatch = bValues.some(v => v === targetDateTimeNormalized || v.includes(targetDateTimeNormalized));
 
-        return (bService === targetService) && 
-               (bDateTimeNormalized === targetDateTimeNormalized) &&
-               (bStatus !== 'Cancelled' && bStatus !== '🚫 已取消' && bStatus !== '已取消');
+        // Check status (if status field exists)
+        const bStatus = String(b.Status || b.status || '').trim();
+        const isCancelled = (bStatus === 'Cancelled' || bStatus === '🚫 已取消' || bStatus === '已取消');
+
+        return serviceMatch && timeMatch && !isCancelled;
       });
 
       // Robust check for availability (handle boolean or string "true"/"false")

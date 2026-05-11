@@ -110,7 +110,7 @@ function renderBookings(bookings) {
       <td>${b.Phone || b.mobile || 'N/A'}</td>
       <td>${b.ServiceName1 || b.ServiceName}</td>
       <td>${b.DateTime}</td>
-      <td>NT$ ${b.Amount}</td>
+      <td style="display:none;">NT$ ${b.Amount}</td>
       <td>
         <select onchange="updateStatus('${b.ID}', this.value)" class="status-select">
           <option value="Pending" ${b.Status === 'Pending' ? 'selected' : ''}>⏳ 待處理</option>

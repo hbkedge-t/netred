@@ -71,14 +71,15 @@
         }
 
         select {
-            background: #1A1A1A;
-            color: var(--text);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 8px;
             padding: 6px 12px;
             font-family: inherit;
             font-size: 13px;
             outline: none;
+            cursor: pointer;
         }
 
         select:focus {
@@ -211,7 +212,7 @@
                 <div class="stat-label">總訂單數</div>
                 <div class="stat-value" id="totalCount">0</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" style="display:none;">
                 <div class="stat-label">設計師業績</div>
                 <div id="designer-stats" style="margin-top: 10px; font-size: 12px; line-height: 1.8;">
                     載入中...
@@ -239,7 +240,7 @@
                                 <th>電話</th>
                                 <th>服務項目</th>
                                 <th>日期時間</th>
-                                <th>金額</th>
+                                <th style="display:none;">金額</th>
                                 <th>狀態管理</th>
                             </tr>
                         </thead>

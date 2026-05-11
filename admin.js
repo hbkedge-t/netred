@@ -107,8 +107,8 @@ function renderBookings(bookings) {
     <tr>
       <td><small>${b.ID}</small></td>
       <td><b>${b.Name}</b><br><small style="color: grey;">${b.Phone || 'N/A'}</small></td>
-      <td>${b.DesignerID}</td>
-      <td>${b.ServiceName}</td>
+      <td>${b.Phone || b.mobile || 'N/A'}</td>
+      <td>${b.ServiceName1 || b.ServiceName}</td>
       <td>${b.DateTime}</td>
       <td>NT$ ${b.Amount}</td>
       <td>
